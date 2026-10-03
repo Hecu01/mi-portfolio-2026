@@ -37,12 +37,8 @@
         rel="stylesheet"
     >
 
-    <!-- Nuestro link vite  -->
-    @vite([
-        'resources/css/app.css',
-        'resources/css/portfolio.css',
-        'resources/js/app.js'
-    ])
+    <!-- Nuestro CSS -->
+    <link rel="stylesheet" href="{{ asset('css/portfolio.css') }}">
 
     @stack('styles')
 
