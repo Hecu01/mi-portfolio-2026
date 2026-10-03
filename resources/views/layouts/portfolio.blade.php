@@ -47,161 +47,161 @@
 
 </head>
 
-<body>
+    <body>
 
-    @yield('content')
-
-
-    <!-- Bootstrap JS -->
-    <script
-        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
-    </script>
-
-    @stack('scripts')
-    <script>
-
-        document.addEventListener('DOMContentLoaded', function () {
-
-            const sections = document.querySelectorAll(
-                '#inicio, #sobre-mi, #servicios, #proyectos, #contacto'
-            );
-
-            const navLinks = document.querySelectorAll(
-                '.portfolio-navbar .nav-link'
-            );
-
-            const navbar = document.querySelector('.portfolio-navbar');
-
-            const indicator = document.querySelector(
-                '.portfolio-navbar .nav-indicator'
-            );
+        @yield('content')
 
 
-            function moverIndicador(link) {
+        <!-- Bootstrap JS -->
+        <script
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
+        </script>
 
-                if (!link || !indicator) {
-                    return;
+        @stack('scripts')
+        <script>
+
+            document.addEventListener('DOMContentLoaded', function () {
+
+                const sections = document.querySelectorAll(
+                    '#inicio, #sobre-mi, #servicios, #proyectos, #contacto'
+                );
+
+                const navLinks = document.querySelectorAll(
+                    '.portfolio-navbar .nav-link'
+                );
+
+                const navbar = document.querySelector('.portfolio-navbar');
+
+                const indicator = document.querySelector(
+                    '.portfolio-navbar .nav-indicator'
+                );
+
+
+                function moverIndicador(link) {
+
+                    if (!link || !indicator) {
+                        return;
+                    }
+
+
+                    const nav = link.closest('.navbar-nav');
+
+                    const navRect = nav.getBoundingClientRect();
+
+                    const linkRect = link.getBoundingClientRect();
+
+
+                    indicator.style.left =
+                        (linkRect.left - navRect.left) + 'px';
+
+
+                    indicator.style.width =
+                        linkRect.width + 'px';
+
                 }
 
 
-                const nav = link.closest('.navbar-nav');
+                function actualizarNavbar() {
 
-                const navRect = nav.getBoundingClientRect();
-
-                const linkRect = link.getBoundingClientRect();
-
-
-                indicator.style.left =
-                    (linkRect.left - navRect.left) + 'px';
+                    const scrollPosition =
+                        window.scrollY +
+                        navbar.offsetHeight +
+                        120;
 
 
-                indicator.style.width =
-                    linkRect.width + 'px';
-
-            }
+                    let seccionActual = 'inicio';
 
 
-            function actualizarNavbar() {
+                    sections.forEach(section => {
 
-                const scrollPosition =
-                    window.scrollY +
-                    navbar.offsetHeight +
-                    120;
+                        if (
+                            scrollPosition >=
+                            section.offsetTop
+                        ) {
 
+                            seccionActual =
+                                section.id;
 
-                let seccionActual = 'inicio';
+                        }
 
-
-                sections.forEach(section => {
-
-                    if (
-                        scrollPosition >=
-                        section.offsetTop
-                    ) {
-
-                        seccionActual =
-                            section.id;
-
-                    }
-
-                });
+                    });
 
 
-                let linkActivo = null;
+                    let linkActivo = null;
 
+
+                    navLinks.forEach(link => {
+
+                        link.classList.remove('active');
+
+
+                        if (
+                            link.getAttribute('href') ===
+                            '#' + seccionActual
+                        ) {
+
+                            link.classList.add('active');
+
+                            linkActivo = link;
+
+                        }
+
+                    });
+
+
+                    moverIndicador(linkActivo);
+
+                }
+
+
+                /* SCROLL */
+
+                window.addEventListener(
+                    'scroll',
+                    actualizarNavbar,
+                    { passive: true }
+                );
+
+
+                /* CLICK */
 
                 navLinks.forEach(link => {
 
-                    link.classList.remove('active');
+                    link.addEventListener(
+                        'click',
+                        function () {
+
+                            navLinks.forEach(item => {
+                                item.classList.remove('active');
+                            });
 
 
-                    if (
-                        link.getAttribute('href') ===
-                        '#' + seccionActual
-                    ) {
+                            this.classList.add('active');
 
-                        link.classList.add('active');
 
-                        linkActivo = link;
+                            moverIndicador(this);
 
-                    }
+                        }
+                    );
 
                 });
 
 
-                moverIndicador(linkActivo);
+                /* CARGA INICIAL */
 
-            }
-
-
-            /* SCROLL */
-
-            window.addEventListener(
-                'scroll',
-                actualizarNavbar,
-                { passive: true }
-            );
+                actualizarNavbar();
 
 
-            /* CLICK */
+                /* REAJUSTAR SI CAMBIA EL TAMAÑO */
 
-            navLinks.forEach(link => {
-
-                link.addEventListener(
-                    'click',
-                    function () {
-
-                        navLinks.forEach(item => {
-                            item.classList.remove('active');
-                        });
-
-
-                        this.classList.add('active');
-
-
-                        moverIndicador(this);
-
-                    }
+                window.addEventListener(
+                    'resize',
+                    actualizarNavbar
                 );
 
             });
 
-
-            /* CARGA INICIAL */
-
-            actualizarNavbar();
-
-
-            /* REAJUSTAR SI CAMBIA EL TAMAÑO */
-
-            window.addEventListener(
-                'resize',
-                actualizarNavbar
-            );
-
-        });
-
-    </script>
-</body>
+        </script>
+    </body>
 
 </html>
