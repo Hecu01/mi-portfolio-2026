@@ -136,7 +136,7 @@
 
                 <div class="col-lg-6">
 
-                    <div class="hero-label">
+                    <div class="hero-label" >
 
                         <span></span>
 
